@@ -1,0 +1,7 @@
+/.idea/
+/target/classes/
+/target/generated*
+/target/maven*
+/target/*.jar
+/target/surefire*
+/target/test*
