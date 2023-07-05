@@ -4,33 +4,22 @@ import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import praktikum.pojo.CreateUser;
 import praktikum.clients.UserClient;
+import praktikum.pojo.CreateUser;
 
-public class ChangeUserDataTest {
+public class ChangeUserDataTest extends BaseTest {
 
-    private UserClient userClient = new UserClient();
-
+    private final UserClient userClient = new UserClient();
+    private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
+    private final String password = RandomStringUtils.randomAlphabetic(8);
+    private final String name = RandomStringUtils.randomAlphabetic(8);
+    private final String errorAuthorization = "You should be authorised";
+    private final String errorBusyEmail = "User with such email already exists";
     private String accessToken;
-    private String email    = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
-    private String password = RandomStringUtils.randomAlphabetic(8);
-    private String name     = RandomStringUtils.randomAlphabetic(8);
-
-    private String errorAuthorization = "You should be authorised";
-    private String errorBusyEmail     = "User with such email already exists";
 
     @Before
     public void createUser() {
-        CreateUser createUser = new CreateUser();
-        createUser.setEmail(email);
-        createUser.setName(name);
-        createUser.setPassword(password);
-
-        accessToken = userClient.create(createUser)
-                .statusCode(200)
-                .body("success", Matchers.equalTo(true))
-                .extract().jsonPath().get("accessToken");
+        accessToken = startUp(userClient, email, password, name);
     }
 
     @Test
@@ -76,9 +65,7 @@ public class ChangeUserDataTest {
 
     @After
     public void tearDown() {
-        if (accessToken != null) {
-            userClient.delete(accessToken);
-        }
+        clearUp(userClient, accessToken);
     }
 
 }

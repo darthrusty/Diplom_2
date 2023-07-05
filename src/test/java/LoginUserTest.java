@@ -4,30 +4,21 @@ import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import praktikum.pojo.CreateUser;
-import praktikum.pojo.LoginUser;
 import praktikum.clients.UserClient;
-public class LoginUserTest {
+import praktikum.pojo.LoginUser;
 
-    private UserClient userClient = new UserClient();
+public class LoginUserTest extends BaseTest {
 
+    private final UserClient userClient = new UserClient();
+    private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
+    private final String password = RandomStringUtils.randomAlphabetic(8);
+    private final String name = RandomStringUtils.randomAlphabetic(8);
+    private final String errorLoginMessage = "email or password are incorrect";
     private String accessToken;
-    private String email             = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
-    private String password          = RandomStringUtils.randomAlphabetic(8);
-    private String errorLoginMessage = "email or password are incorrect";
 
     @Before
     public void createUser() {
-        CreateUser createUser = new CreateUser();
-        createUser.setEmail(email);
-        createUser.setName(RandomStringUtils.randomAlphabetic(8));
-        createUser.setPassword(password);
-
-        accessToken = userClient.create(createUser)
-                .statusCode(200)
-                .body("success", Matchers.equalTo(true))
-                .extract().jsonPath().get("accessToken");
+        accessToken = startUp(userClient, email, name, password);
     }
 
     @Test
@@ -70,9 +61,7 @@ public class LoginUserTest {
 
     @After
     public void tearDown() {
-        if (accessToken != null) {
-            userClient.delete(accessToken);
-        }
+        clearUp(userClient, accessToken);
     }
 
 }

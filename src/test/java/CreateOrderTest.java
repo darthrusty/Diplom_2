@@ -1,39 +1,34 @@
 import io.qameta.allure.junit4.DisplayName;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import praktikum.clients.OrderClient;
+import praktikum.clients.UserClient;
+import praktikum.pojo.CreateOrder;
+import praktikum.pojo.CreateUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import praktikum.pojo.CreateUser;
-import praktikum.pojo.CreateOrder;
-import praktikum.clients.UserClient;
-import praktikum.clients.OrderClient;
+public class CreateOrderTest extends BaseTest {
 
-public class CreateOrderTest {
-
-    private UserClient userClient   = new UserClient();
-    private OrderClient orderClient = new OrderClient();
-
+    private final UserClient userClient = new UserClient();
+    private final OrderClient orderClient = new OrderClient();
+    private final List<String> ingredients = new ArrayList<>();
+    private final String errorAuthorization = "You should be authorised";
+    private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
+    private final String password = RandomStringUtils.randomAlphabetic(8);
+    private final String name = RandomStringUtils.randomAlphabetic(8);
     private String accessToken;
-    private List<String> ingredients = new ArrayList<>();
-
-    private String errorAuthorization = "You should be authorised";
 
     @Before
     public void createUser() {
         String id0;
         CreateUser createUser = new CreateUser();
-        createUser.setEmail("testMailz22@mail.ru");
-        createUser.setName("imyaryak");
-        createUser.setPassword("password");
 
-        accessToken = userClient.create(createUser)
-                .statusCode(200)
-                .body("success", Matchers.equalTo(true))
-                .extract().jsonPath().get("accessToken");
+        accessToken = startUp(userClient, email, password, name);
 
         id0 = orderClient.getIngredients()
                 .statusCode(200)
@@ -97,7 +92,7 @@ public class CreateOrderTest {
     }
 
     @Test
-    @DisplayName("Неудачное создание заказа неверным хэшем ингридиентов")
+    @DisplayName("Неудачное создание заказа с неверным хэшем ингридиентов")
     public void createOrderWithWrongIngredientsId() {
         ingredients.add("");
 
@@ -110,9 +105,7 @@ public class CreateOrderTest {
 
     @After
     public void tearDown() {
-        if (accessToken != null) {
-            userClient.delete(accessToken);
-        }
+        clearUp(userClient, accessToken);
     }
 
 }

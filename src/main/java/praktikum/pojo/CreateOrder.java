@@ -4,9 +4,9 @@ import java.util.List;
 
 public class CreateOrder {
 
-    private List<String>  ingredients;
+    private List<String> ingredients;
 
-    public List<String>  getIngredients() {
+    public List<String> getIngredients() {
         return ingredients;
     }
 

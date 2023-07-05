@@ -4,31 +4,22 @@ import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import praktikum.pojo.CreateUser;
-import praktikum.clients.UserClient;
 import praktikum.clients.OrderClient;
+import praktikum.clients.UserClient;
 
-public class GetOrderTest {
+public class GetOrderTest extends BaseTest {
 
-    private UserClient userClient   = new UserClient();
-    private OrderClient orderClient = new OrderClient();
-
+    private final UserClient userClient = new UserClient();
+    private final OrderClient orderClient = new OrderClient();
+    private final String errorAuthorization = "You should be authorised";
+    private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
+    private final String password = RandomStringUtils.randomAlphabetic(8);
+    private final String name = RandomStringUtils.randomAlphabetic(8);
     private String accessToken;
-
-    private String errorAuthorization = "You should be authorised";
 
     @Before
     public void createUser() {
-        CreateUser createUser = new CreateUser();
-        createUser.setEmail(RandomStringUtils.randomAlphabetic(8) + "@yandex.ru");
-        createUser.setName(RandomStringUtils.randomAlphabetic(8));
-        createUser.setPassword(RandomStringUtils.randomAlphabetic(8));
-
-        accessToken = userClient.create(createUser)
-                .statusCode(200)
-                .body("success", Matchers.equalTo(true))
-                .extract().jsonPath().get("accessToken");
+        accessToken = startUp(userClient, email, password, name);
     }
 
     @Test
@@ -40,7 +31,7 @@ public class GetOrderTest {
     }
 
     @Test
-    @DisplayName("Успешное получение заказов c авторизацией")
+    @DisplayName("Неудачное получение заказов без авторизации")
     public void getOrdersWithoutAuthorization() {
         orderClient.getOrdersList("")
                 .statusCode(401)
@@ -50,9 +41,7 @@ public class GetOrderTest {
 
     @After
     public void tearDown() {
-        if (accessToken != null) {
-            userClient.delete(accessToken);
-        }
+        clearUp(userClient, accessToken);
     }
 
 }

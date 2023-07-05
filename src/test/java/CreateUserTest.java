@@ -3,20 +3,18 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Test;
-
-import praktikum.pojo.CreateUser;
 import praktikum.clients.UserClient;
+import praktikum.pojo.CreateUser;
 
-public class CreateUserTest {
+public class CreateUserTest extends BaseTest {
 
-    private UserClient userClient = new UserClient();
-
+    private final UserClient userClient = new UserClient();
+    private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
+    private final String password = RandomStringUtils.randomAlphabetic(8);
+    private final String name = RandomStringUtils.randomAlphabetic(8);
+    private final String errorExistingUser = "User already exists";
+    private final String errorData = "Email, password and name are required fields";
     private String accessToken;
-    private String email             = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
-    private String password          = RandomStringUtils.randomAlphabetic(8);
-    private String name              = RandomStringUtils.randomAlphabetic(8);
-    private String errorExistingUser = "User already exists";
-    private String errorData         = "Email, password and name are required fields";
 
     @Test
     @DisplayName("Успешная регистрация")
@@ -92,9 +90,7 @@ public class CreateUserTest {
 
     @After
     public void tearDown() {
-        if (accessToken != null) {
-            userClient.delete(accessToken);
-        }
+        clearUp(userClient, accessToken);
     }
 
 }
