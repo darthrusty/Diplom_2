@@ -7,13 +7,14 @@ import org.junit.Test;
 import praktikum.clients.UserClient;
 import praktikum.pojo.LoginUser;
 
+import static praktikum.constants.constants.errorLoginMessage;
+
 public class LoginUserTest extends BaseTest {
 
     private final UserClient userClient = new UserClient();
     private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
     private final String password = RandomStringUtils.randomAlphabetic(8);
     private final String name = RandomStringUtils.randomAlphabetic(8);
-    private final String errorLoginMessage = "email or password are incorrect";
     private String accessToken;
 
     @Before

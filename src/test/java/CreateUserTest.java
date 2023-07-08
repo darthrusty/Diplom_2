@@ -6,14 +6,15 @@ import org.junit.Test;
 import praktikum.clients.UserClient;
 import praktikum.pojo.CreateUser;
 
+import static praktikum.constants.constants.errorData;
+import static praktikum.constants.constants.errorExistingUser;
+
 public class CreateUserTest extends BaseTest {
 
     private final UserClient userClient = new UserClient();
     private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
     private final String password = RandomStringUtils.randomAlphabetic(8);
     private final String name = RandomStringUtils.randomAlphabetic(8);
-    private final String errorExistingUser = "User already exists";
-    private final String errorData = "Email, password and name are required fields";
     private String accessToken;
 
     @Test

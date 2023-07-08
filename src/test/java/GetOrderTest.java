@@ -7,11 +7,12 @@ import org.junit.Test;
 import praktikum.clients.OrderClient;
 import praktikum.clients.UserClient;
 
+import static praktikum.constants.constants.errorAuthorization;
+
 public class GetOrderTest extends BaseTest {
 
     private final UserClient userClient = new UserClient();
     private final OrderClient orderClient = new OrderClient();
-    private final String errorAuthorization = "You should be authorised";
     private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
     private final String password = RandomStringUtils.randomAlphabetic(8);
     private final String name = RandomStringUtils.randomAlphabetic(8);

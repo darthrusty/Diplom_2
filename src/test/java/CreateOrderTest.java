@@ -12,12 +12,13 @@ import praktikum.pojo.CreateUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static praktikum.constants.constants.errorAuthorization;
+
 public class CreateOrderTest extends BaseTest {
 
     private final UserClient userClient = new UserClient();
     private final OrderClient orderClient = new OrderClient();
     private final List<String> ingredients = new ArrayList<>();
-    private final String errorAuthorization = "You should be authorised";
     private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
     private final String password = RandomStringUtils.randomAlphabetic(8);
     private final String name = RandomStringUtils.randomAlphabetic(8);

@@ -7,14 +7,15 @@ import org.junit.Test;
 import praktikum.clients.UserClient;
 import praktikum.pojo.CreateUser;
 
+import static praktikum.constants.constants.errorAuthorization;
+import static praktikum.constants.constants.errorBusyEmail;
+
 public class ChangeUserDataTest extends BaseTest {
 
     private final UserClient userClient = new UserClient();
     private final String email = RandomStringUtils.randomAlphabetic(8) + "@yandex.ru";
     private final String password = RandomStringUtils.randomAlphabetic(8);
     private final String name = RandomStringUtils.randomAlphabetic(8);
-    private final String errorAuthorization = "You should be authorised";
-    private final String errorBusyEmail = "User with such email already exists";
     private String accessToken;
 
     @Before
